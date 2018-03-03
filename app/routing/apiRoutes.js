@@ -44,13 +44,25 @@ module.exports = function (app) {
         friends.push(req.body);
         //("this is the last element pushed to the array",friends[friends.length-1]);
         var newMember = friends[friends.length-1];
+        var matchMember="";
+        var smallestDifference = 40;
         console.log("New Member Looking for Love", newMember);
-        // console.log("displaying array de amigos",friends);
+        console.log("displaying array de amigos",friends);
         for (let index = 0; index < friends.length-1; index++) {
-            //console.log("this is index #", index, friends[index].scores);   
-            for (let i = 0; i < 10; i++){
-            console.log(Math.abs(Number(newMember.scores[i])-Number(friends[index].scores[i]))); 
-        }}
+            console.log("this is index #", index, friends[index].scores);  
+            var totalDifference = 0; 
+                for (let i = 0; i < 10; i++){
+                     totalDifference = totalDifference+(Math.abs(Number(newMember.scores[i])-Number(friends[index].scores[i]))); 
+                     console.log(totalDifference);
+                        if (i === 9 && totalDifference <= smallestDifference) {
+                        smallestDifference = totalDifference
+                        console.log("the smallest is ",smallestDifference);
+                        matchMember = friends[index];
+                        }
+                }
+        }
+        console.log(matchMember);
+        res.json(matchMember);
         
         // if (tableData.length < 5) {
         //     tableData.push(req.body);
@@ -66,7 +78,7 @@ module.exports = function (app) {
     // I added this below code so you could clear out the table while working with the functionality.
     // Don"t worry about it!
 
-    app.post("/api/clear", function () {
+    app.get("/api/clear", function () {
         // Empty out the arrays of data
         friends = [];
         //waitListData = [];
